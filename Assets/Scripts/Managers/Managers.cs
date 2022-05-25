@@ -5,7 +5,12 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance; //유일성보장
-    public static Managers Instance { get { init(); return s_instance; } }
+    static Managers Instance { get { init(); return s_instance; } }
+    
+    InputManager _input = new InputManager();
+    ResourceManager _resource = new ResourceManager();
+    static public InputManager Input { get { return Instance._input; } }
+    public static ResourceManager Resource { get { return Instance._resource; } }
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +20,7 @@ public class Managers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        _input.OnUpdate();
     }
 
     static void init()
@@ -31,8 +36,6 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(go);// 쉽게 삭제되지 않게함.
             s_instance = go.GetComponent<Managers>();
-
         }
-
     }
 }
