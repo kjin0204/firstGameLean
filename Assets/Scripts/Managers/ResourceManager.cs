@@ -9,6 +9,7 @@ public class ResourceManager
         return Resources.Load<T>(path);
     }
 
+    //오브젝트 생성
     public GameObject Instantiate(string path, Transform parent = null)
     {
         GameObject prefab = Load<GameObject>($"Prefabs/{path}");
@@ -21,6 +22,7 @@ public class ResourceManager
         return Object.Instantiate(prefab, parent);
     }
 
+    //오브젝트 삭제
     public void Destroy(GameObject go)
     {
         if (go == null)

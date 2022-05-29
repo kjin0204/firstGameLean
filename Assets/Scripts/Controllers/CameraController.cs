@@ -16,16 +16,26 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void LateUpdate() // LakeUpdate 
     {
-        if(_mode == Define.CameraMode.QuarterView)
+        if (_mode == Define.CameraMode.QuarterView)
         {
-            transform.position = _player.transform.position + _delta;
-            transform.LookAt(_player.transform); //카메라가 해당 오브젝트를 주시하게 함.
+            RaycastHit hit;
+            if (Physics.Raycast(_player.transform.position, _delta, out hit, _delta.magnitude, LayerMask.GetMask("Wall")))
+            {
+                float dst = (hit.point - _player.transform.position).magnitude * 0.8f;
+                transform.position = _player.transform.position + _delta.normalized * dst;
+            }
+            else
+            {
+                transform.position = _player.transform.position + _delta;
+                transform.LookAt(_player.transform); //카메라가 해당 오브젝트를 주시하게 함.
+            }
         }
+
     }
 
     public void SetQuaterView(Vector3 delta)

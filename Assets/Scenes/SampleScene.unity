@@ -255,18 +255,6 @@ CapsuleCollider:
   m_Height: 2.0757399
   m_Direction: 1
   m_Center: {x: -0.008533865, y: 0.53786993, z: 0}
---- !u!114 &705394597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 705394591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8ed1a8195386d488c7036746f289d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +695,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4952540026227211122, guid: f2ac9725a802364408767caf4ef5a0cf, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 010f7e5895d4a2c4e8225d03e3333700, type: 2}
     - target: {fileID: 4952540026236556756, guid: f2ac9725a802364408767caf4ef5a0cf, type: 3}
       propertyPath: m_RootOrder
       value: 2

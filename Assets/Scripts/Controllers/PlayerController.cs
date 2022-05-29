@@ -6,62 +6,140 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] //어트리뷰트 붙여주면 유니티에서 변수로 사용가능
     float _speed = 10.0f;
+
+
+    Vector3 _destPos;
+    bool _moveToDest = false;
     void Start()
     {
         Managers.Input.KeyAction += Onkeyboard;
+        Managers.Input.MouseAction += OnMouseClicked;
     }
 
+    public enum PlayerState
+    {
+        Die,
+        Moving,
+        Idle,
+    }
+
+    PlayerState _state = PlayerState.Idle;
+
     float _yAngle = 0.0f;
+    float wait_run_ratio;
+
+    void UpdateDie()
+    {
+
+    }
+
+    void UpdateMoving()
+    {
+        Vector3 dir = _destPos - transform.position;
+
+        if (dir.magnitude <= 0.0001f)
+        {
+            _state = PlayerState.Idle;
+        }
+        else
+        {
+            float moveDist = Mathf.Clamp(_speed * Time.deltaTime, 0, dir.magnitude); //최소 값보다 작은 값은 최소값으로 , 최대값보다 큰값은 최대값으로 반환
+            transform.position += dir.normalized * moveDist;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10 * Time.deltaTime);
+            //transform.LookAt(_destPos);
+        }
+
+
+        Animator any;
+        any = GetComponent<Animator>();
+        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10.0f * Time.deltaTime);
+        any.Play("WAIT_RUN");
+        any.SetFloat("wait_run_ratio", wait_run_ratio);
+    }
+
+    void UpdateIdle()
+    {
+
+        Animator any;
+        any = GetComponent<Animator>();
+
+        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10.0f * Time.deltaTime);
+        any.Play("WAIT_RUN");
+        any.SetFloat("wait_run_ratio", wait_run_ratio);
+    }
+
     //한프레임당 한번씩 실행
     void Update()
     {
+        switch(_state)
+        {
+            case PlayerState.Die:
+                UpdateDie();
+                break;
+            case PlayerState.Moving:
+                UpdateMoving();
+                break;
+            case PlayerState.Idle:
+                UpdateIdle();
+                break;
+        }
+
     }
 
     void Onkeyboard()
     {
-        //transform.position 월드 좌표
-        //Time.deltaTime;  지난시간프레임 이후 경과된 시간
-        //transform.position.magnitude 크기를 반환(피타고라스 정의로 구현)
-        //transform.position.normalized 가리키는 방향은 같지만 크기가 1인 벡터 반환
+        //_yAngle += Time.deltaTime * _speed;
 
-        //TransformDirection 로컬에서 월드 좌표로 변환
-        //InverseTransformDirection 월드에서 로컬로 변환
-        // Translate 바라보고있는 방향으로 좌표를 바꿔줌
-        _yAngle += Time.deltaTime * _speed;
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    //2. 부드럽게 회전을 시켜줌 a : 첫번째 포지션, b : 목표 위치, 3 : 0~ 1의 값이며 0 은 a에 가깝게 1은 b에 가깝게 회전을 부드럽게 해주는 값
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.forward), 0.1f);
+        //    //3. 월드 방향으로 이동
+        //    transform.position += Vector3.forward * Time.deltaTime * _speed;
+        //}
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left), 0.1f);
+        //    transform.position += Vector3.left * Time.deltaTime * _speed;
+        //}
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.right), 0.1f);
+        //    transform.position += Vector3.right * Time.deltaTime * _speed;
+        //}
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.back), 0.1f);
+        //    transform.position += Vector3.back * Time.deltaTime * _speed;
+        //}
+        //_moveToDest = false;
+    }
 
-        //절대 회전값입력
-        //transform.eulerAngles = new Vector3(0.0f, _yAngle, 0.0f);
 
-        // += delta
-        //transform.Rotate(new Vector3(0.0f, Time.deltaTime * 100.0f, 0.0f));
-        //transform.rotation = Quaternion.Euler(new Vector3(0.0f, _yAngle, 0.0f));
+    void OnMouseClicked(Define.MouseEvent evt)
+    {
+        if(_state == PlayerState.Die)
+            return;
 
-        if (Input.GetKey(KeyCode.W))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //마우스를 찍었을때 화면에 표시 해주기 위함
+        Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
+        
+        RaycastHit hit;
+        // 레이어 정보를 가지고 오는 방법 2가지------------------------------------------------
+        //LayerMask mask = LayerMask.GetMask("Monster") | LayerMask.GetMask("Wall"); //비트를  8번, 9번 옆으로 이동 시킴 
+        //int mask = (1 << 8) | (1 << 9); //비트를  8번, 9번 옆으로 이동 시킴 
+        //--------------------------------------------------------------------------------------
+
+        //1: 카메라 포지션, 2: 방향, 3: 부딪힌 피사체,4: 최대 거리
+        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Wall"))) //특정 Layer만 적용 하고 싶을때 mask에 비트를 넣어 적용
         {
-            //1. 해당 방향으로 바라보게 회전 시킴 월드 기준
-            //transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            //2. 부드럽게 회전을 시켜줌 a : 첫번째 포지션, b : 목표 위치, 3 : 0~ 1의 값이며 0 은 a에 가깝게 1은 b에 가깝게 회전을 부드럽게 해주는 값
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.forward), 0.1f);
-            //3. 월드 방향으로 이동
-            transform.position += Vector3.forward * Time.deltaTime * _speed;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            //transform.rotation = Quaternion.LookRotation(Vector3.left);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left), 0.1f);
-            transform.position += Vector3.left * Time.deltaTime * _speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            //transform.rotation = Quaternion.LookRotation(Vector3.right);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.right), 0.1f);
-            transform.position += Vector3.right * Time.deltaTime * _speed;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            //transform.rotation = Quaternion.LookRotation(Vector3.back);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.back), 0.1f);
-            transform.position += Vector3.back * Time.deltaTime * _speed;
+            _destPos = hit.point;
+            _moveToDest = true;
+
+            //hit.collider.gameObject.tag
+            Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
+            _state = PlayerState.Moving;
         }
     }
 }
