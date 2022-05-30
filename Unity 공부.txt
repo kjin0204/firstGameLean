@@ -1,0 +1,21 @@
+
+1. 이동 관련
+    //transform.position 월드 좌표
+    //Time.deltaTime;  지난시간프레임 이후 경과된 시간
+    //transform.position.magnitude 크기를 반환(피타고라스 정의로 구현)
+    //transform.position.normalized 가리키는 방향은 같지만 크기가 1인 벡터 반환
+
+    //TransformDirection 로컬에서 월드 좌표로 변환
+    //InverseTransformDirection 월드에서 로컬로 변환
+    // Translate 바라보고있는 방향으로 좌표를 바꿔줌
+
+    //절대 회전값입력
+    //transform.eulerAngles = new Vector3(0.0f, _yAngle, 0.0f);
+
+    // += delta
+    //transform.Rotate(new Vector3(0.0f, Time.deltaTime * 100.0f, 0.0f));
+    //transform.rotation = Quaternion.Euler(new Vector3(0.0f, _yAngle, 0.0f));
+    
+    //1. 해당 방향으로 바라보게 회전 시킴 월드 기준
+    //transform.rotation = Quaternion.LookRotation(Vector3.forward);
+

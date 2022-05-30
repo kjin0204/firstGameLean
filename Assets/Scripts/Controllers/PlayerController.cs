@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
 
 
     Vector3 _destPos;
-    bool _moveToDest = false;
     void Start()
     {
         Managers.Input.KeyAction += Onkeyboard;
@@ -26,7 +25,6 @@ public class PlayerController : MonoBehaviour
     PlayerState _state = PlayerState.Idle;
 
     float _yAngle = 0.0f;
-    float wait_run_ratio;
 
     void UpdateDie()
     {
@@ -52,9 +50,7 @@ public class PlayerController : MonoBehaviour
 
         Animator any;
         any = GetComponent<Animator>();
-        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10.0f * Time.deltaTime);
-        any.Play("WAIT_RUN");
-        any.SetFloat("wait_run_ratio", wait_run_ratio);
+        any.SetFloat("speed", _speed);
     }
 
     void UpdateIdle()
@@ -62,10 +58,7 @@ public class PlayerController : MonoBehaviour
 
         Animator any;
         any = GetComponent<Animator>();
-
-        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10.0f * Time.deltaTime);
-        any.Play("WAIT_RUN");
-        any.SetFloat("wait_run_ratio", wait_run_ratio);
+        any.SetFloat("speed", 0);
     }
 
     //한프레임당 한번씩 실행
@@ -135,7 +128,6 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Wall"))) //특정 Layer만 적용 하고 싶을때 mask에 비트를 넣어 적용
         {
             _destPos = hit.point;
-            _moveToDest = true;
 
             //hit.collider.gameObject.tag
             Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
