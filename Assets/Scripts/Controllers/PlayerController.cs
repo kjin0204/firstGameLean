@@ -79,6 +79,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void NewEvent(int test)
+    {
+        Debug.Log($"¶Ñ¹÷¶Ñ¹÷ {test}");
+    }
+
     void Onkeyboard()
     {
         //_yAngle += Time.deltaTime * _speed;
@@ -130,7 +135,7 @@ public class PlayerController : MonoBehaviour
             _destPos = hit.point;
 
             //hit.collider.gameObject.tag
-            Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
+            //Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
             _state = PlayerState.Moving;
         }
     }

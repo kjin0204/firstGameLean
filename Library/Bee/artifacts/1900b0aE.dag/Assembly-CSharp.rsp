@@ -355,6 +355,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Controllers/CameraController.cs"
 "Assets/Scripts/Controllers/PlayerController.cs"
+"Assets/Scripts/CubeEventTest.cs"
 "Assets/Scripts/Managers/InputManager.cs"
 "Assets/Scripts/Managers/Managers.cs"
 "Assets/Scripts/Managers/ResourceManager.cs"
