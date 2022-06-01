@@ -360,7 +360,12 @@
 "Assets/Scripts/Managers/ResourceManager.cs"
 "Assets/Scripts/PrefabTest.cs"
 "Assets/Scripts/TestColliision.cs"
+"Assets/Scripts/UI/UI_Base.cs"
+"Assets/Scripts/UI/UI_Button.cs"
+"Assets/Scripts/UI/UI_Eventhandler.cs"
 "Assets/Scripts/Utils/Define.cs"
+"Assets/Scripts/Utils/Extension.cs"
+"Assets/Scripts/Utils/Util.cs"
 -langversion:9.0
 
 /deterministic

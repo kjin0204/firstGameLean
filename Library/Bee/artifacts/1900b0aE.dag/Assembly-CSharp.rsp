@@ -355,13 +355,14 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Controllers/CameraController.cs"
 "Assets/Scripts/Controllers/PlayerController.cs"
-"Assets/Scripts/CubeEventTest.cs"
 "Assets/Scripts/Managers/InputManager.cs"
 "Assets/Scripts/Managers/Managers.cs"
 "Assets/Scripts/Managers/ResourceManager.cs"
 "Assets/Scripts/PrefabTest.cs"
 "Assets/Scripts/TestColliision.cs"
+"Assets/Scripts/UI/ButtonUI.cs"
 "Assets/Scripts/Utils/Define.cs"
+"Assets/Scripts/Utils/Util.cs"
 -langversion:9.0
 
 /deterministic

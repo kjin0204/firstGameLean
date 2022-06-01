@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     {
         Managers.Input.KeyAction += Onkeyboard;
         Managers.Input.MouseAction += OnMouseClicked;
+
+        //Managers.Resource.Instantiate("UI/UI_Button");
     }
 
     public enum PlayerState
@@ -77,11 +79,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-    }
-
-    public void NewEvent(int test)
-    {
-        Debug.Log($"¶Ñ¹÷¶Ñ¹÷ {test}");
     }
 
     void Onkeyboard()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputManager
 {
@@ -12,6 +13,10 @@ public class InputManager
 
     public void OnUpdate()
     {
+        //UI 컨트롤러 눌렸을때 True처리
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.anyKey != false && KeyAction != null)
             KeyAction.Invoke();
 
